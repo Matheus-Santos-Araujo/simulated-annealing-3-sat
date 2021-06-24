@@ -1,18 +1,21 @@
 import random
+from random import randint
 import math
 from sat import Sat
+import matplotlib.pyplot as plt
 
 TEMPERATURA_MINIMA = 0.001
 
 class estado():
-    def __init__(self, bit_array, value):
+    def __init__(self, bit_array, value, custo):
         self.bit_array = bit_array
         self.value = value
+        self.custo = custo
 
 class Solution(Sat):
-    def __init__(self, temperaturainicial, resfriamento, lacointerno, file):
+    def __init__(self, resfriamento, lacointerno, file):
         super(Solution, self).__init__(file)
-        self.temperaturainicial = temperaturainicial
+        self.temperaturainicial = self.tempinicial()
         self.resfriamento = resfriamento
         self.lacointerno = lacointerno
 
@@ -21,14 +24,18 @@ class Solution(Sat):
         random_position = random.randint(0, self.num_variaveis - 1)
         new_bit_array[random_position] = (new_bit_array[random_position] + 1) % 2
 
-        num_naosatisfativeis, num_satisfativeis, ehsat = self.clausulasvdd(new_bit_array)
+        num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(new_bit_array)
 
         new_value = num_satisfativeis
 
-        return estado(new_bit_array, new_value)
+        return estado(new_bit_array, new_value, num_naosatisfativeis)
 
     def estadoaleatorio(self):
-        return estado([0 for i in range(self.num_variaveis)], 0)
+        array = [randint(0, 1) for i in range(self.num_variaveis)]
+        array = list(array)
+        num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(array)
+        return estado(array, num_satisfativeis, num_naosatisfativeis)
+       #return estado([0 for i in range(self.num_variaveis)], 0)
 
     def resfria(self, temperatura):
         return temperatura * self.resfriamento
@@ -37,40 +44,49 @@ class Solution(Sat):
     def checkcongelou(temperatura):
         return temperatura > TEMPERATURA_MINIMA    
 
-    def get_qtd(self, estado):
-        new_bit_array = list(estado.bit_array)
-        return self.clausulasvdd(new_bit_array)
+    def tempinicial(self):
+        estado = self.estadoaleatorio()
+        energias = []
+        k = randint(1, 100)
+        j = 0
+        best_estado = None
 
-    def makeestado(self, estado):
-        return estado(estado)
-
-    def evaluate(self, ehvetornulo):
-        if ehvetornulo:
-            estadonulo = [0 for i in range(self.num_variaveis)]
-            estado = self.makeestado(estadonulo)
-            return self.get_qtd(estado)
-        else:
-            estado = self.makeestado(self.estadofile)
-            return self.get_qtd(estado)
+        while j < k:
+            neighbor = self.pegarvizinhos(estado)
+            E = neighbor.value - estado.value
+            if (E > 0):
+                energias.append(E)
+                j = j + 1
+        temperatura = 4.48*(sum(energias)/k)        
+        return temperatura
 
     def SimulatedAnnealing(self):
         estado = self.estadoaleatorio()
         temperatura = self.temperaturainicial
+        estados = []
+        iteracoes = []
+        t = 0
 
         best_estado = None
 
         while self.checkcongelou(temperatura):
             for i in range(self.lacointerno):
                 neighbor = self.pegarvizinhos(estado)
-                if neighbor.value > estado.value:
-                    estado = neighbor
-                elif math.e**((neighbor.value - estado.value)/temperatura) >= random.random():
-                    estado = neighbor
+                E = neighbor.value - estado.value
 
-                if not best_estado:
-                    best_estado = estado
-                elif best_estado.value < estado.value:
-                    best_estado = estado
+                if E > 0:
+                    estado = neighbor
+                elif math.e**(E/temperatura) >= random.random():
+                    estado = neighbor
 
             temperatura = self.resfria(temperatura)
-        return best_estado
+            iteracoes.append(t)
+            estados.append(estado.custo)
+            t = t + 1
+            
+        plt.plot(iteracoes, estados)
+        plt.title("3-SAT Simulated Annealing")
+        plt.xlabel('Iterações')
+        plt.ylabel('Custo')
+        plt.show()    
+        return estado

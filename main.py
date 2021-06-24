@@ -12,9 +12,9 @@ class File(list):
         with open(path) as f:
             return f.readlines()
 
-def solve(temperaturainicial, resfriamento, lacointerno, files):
+def solve(resfriamento, lacointerno, files):
     for file in files:
-        solution = Solution(temperaturainicial, resfriamento, lacointerno, File(file))
+        solution = Solution(resfriamento, lacointerno, File(file))
         inicio = time.time()
         sa = solution.SimulatedAnnealing()
         duracao = time.time() - inicio
@@ -23,20 +23,21 @@ def solve(temperaturainicial, resfriamento, lacointerno, files):
 def main():
     
     iter = 0
-    resfriamento = 0.001
-    temperaturainicial = 1000
+    alpha = 0.8
+    temperaturainicial = 2.5
     #temperaturainicial = 4.48 * E
     lacointerno = 200
     arquivocnf = ["SAT1.txt"]
     #arquivocnf = ["SAT2.txt"]
     #arquivocnf = ["SAT3.txt"]
     
-    while (iter < 100):
-        sa, duracao = solve(temperaturainicial, resfriamento, lacointerno, arquivocnf)
+    while (iter < 1):
+        sa, duracao = solve(alpha, lacointerno, arquivocnf)
 
         print("Melhor solucao = ")
         print(sa.bit_array)
         print("Clausulas Satisfeitas = %d" % sa.value)
+        print("Custo: %d" % sa.custo)
         print("Duracao: %f" % duracao)
         iter = iter + 1
 

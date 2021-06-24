@@ -17,7 +17,7 @@ class Sat(object):
                 if len(clausula) == 3:
                     self.clausulas.append(clausula)
 
-    def clausulasvdd(self, bits):
+    def objetivo(self, bits):
         num_satisfativeis = 0
         num_naosatisfativeis = 0
         ehsat = True
