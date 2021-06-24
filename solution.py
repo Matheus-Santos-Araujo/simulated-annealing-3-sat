@@ -2,7 +2,7 @@ import random
 import math
 from sat import Sat
 
-TEMPERATURA_MINIMA = 1
+TEMPERATURA_MINIMA = 0.001
 
 class estado():
     def __init__(self, bit_array, value):
@@ -16,17 +16,19 @@ class Solution(Sat):
         self.resfriamento = resfriamento
         self.lacointerno = lacointerno
 
-    def pegarvizinhos(self, estado):
-        new_bit_array = list(estado.bit_array)
-        random_position = random.randint(0, self.variables_count - 1)
+    def pegarvizinhos(self, state):
+        new_bit_array = list(state.bit_array)
+        random_position = random.randint(0, self.num_variaveis - 1)
         new_bit_array[random_position] = (new_bit_array[random_position] + 1) % 2
 
-        c, w = self.get_ratios(new_bit_array)
-        new_value = (self.ratio*c) + ((1-self.ratio)*w)
-        return estado(c, w, new_value, new_bit_array)
+        num_naosatisfativeis, num_satisfativeis, ehsat = self.clausulasvdd(new_bit_array)
+
+        new_value = num_satisfativeis
+
+        return estado(new_bit_array, new_value)
 
     def estadoaleatorio(self):
-        return estado([0 for i in range(self.variables_count)], 0)
+        return estado([0 for i in range(self.num_variaveis)], 0)
 
     def resfria(self, temperatura):
         return temperatura * self.resfriamento
@@ -66,6 +68,8 @@ class Solution(Sat):
                     estado = neighbor
 
                 if not best_estado:
+                    best_estado = estado
+                elif best_estado.value < estado.value:
                     best_estado = estado
 
             temperatura = self.resfria(temperatura)

@@ -12,33 +12,33 @@ class File(list):
         with open(path) as f:
             return f.readlines()
 
-def solve(ehvetornulo, temperaturainicial, resfriamento, lacointerno, files):
+def solve(temperaturainicial, resfriamento, lacointerno, files):
     for file in files:
-        solution = Solution(File(file))
+        solution = Solution(temperaturainicial, resfriamento, lacointerno, File(file))
         inicio = time.time()
-        sa = solution.SimulatedAnnealing(temperaturainicial, resfriamento, lacointerno, files)
+        sa = solution.SimulatedAnnealing()
         duracao = time.time() - inicio
     return sa, duracao
 
 def main():
-    #arquivocnf = ["SAT2.txt"]
-    #arquivocnf = ["SAT3.txt"]
-    ehvetornulo = False
-    #ehvetornulo = True
     
+    iter = 0
     resfriamento = 0.001
-    temperaturainicial = E / math.log(0.8)
+    temperaturainicial = 1000
+    #temperaturainicial = 4.48 * E
     lacointerno = 200
     arquivocnf = ["SAT1.txt"]
+    #arquivocnf = ["SAT2.txt"]
+    #arquivocnf = ["SAT3.txt"]
     
-    resultqtd, resultehsat, duracao = solve(arquivocnf)
+    while (iter < 100):
+        sa, duracao = solve(temperaturainicial, resfriamento, lacointerno, arquivocnf)
 
-    if resultehsat:
-        print("F(X) = %d SAT" % resultqtd)
+        print("Melhor solucao = ")
+        print(sa.bit_array)
+        print("Clausulas Satisfeitas = %d" % sa.value)
         print("Duracao: %f" % duracao)
-    else:
-        print("F(X) = %d unSAT" % resultqtd)
-        print("Duracao: %f" % duracao)
+        iter = iter + 1
 
 if __name__ == '__main__':
     main()

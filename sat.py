@@ -19,14 +19,16 @@ class Sat(object):
 
     def clausulasvdd(self, bits):
         num_satisfativeis = 0
+        num_naosatisfativeis = 0
         ehsat = True
         for clausula in self.clausulas:
             if Sat.ehsatisfativel(clausula, bits):
                 num_satisfativeis += 1
             else:
-                ehsat = False    
+                ehsat = False
+                num_naosatisfativeis += 1    
 
-        return num_satisfativeis, ehsat
+        return num_naosatisfativeis, num_satisfativeis, ehsat
 
     @staticmethod
     def ehsatisfativel(clausula, bits):
