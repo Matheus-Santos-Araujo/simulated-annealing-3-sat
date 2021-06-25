@@ -7,10 +7,11 @@ import matplotlib.pyplot as plt
 TEMPERATURA_MINIMA = 0.001
 
 class estado():
-    def __init__(self, bit_array, value, sat):
+    def __init__(self, bit_array, value, sat, ehsat):
         self.bit_array = bit_array
         self.value = value
         self.sat = sat
+        self.ehsat = ehsat
 
 class Solution(Sat):
     def __init__(self, resfriamento, lacointerno, file):
@@ -28,13 +29,13 @@ class Solution(Sat):
 
         new_value = num_naosatisfativeis
 
-        return estado(new_bit_array, new_value, num_satisfativeis)
+        return estado(new_bit_array, new_value, num_satisfativeis, ehsat)
 
     def estadoaleatorio(self):
         array = [randint(0, 1) for i in range(self.num_variaveis)]
         array = list(array)
         num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(array)
-        return estado(array, num_naosatisfativeis, num_satisfativeis)
+        return estado(array, num_naosatisfativeis, num_satisfativeis, ehsat)
        #return estado([0 for i in range(self.num_variaveis)], 0)
 
     def resfria(self, temperatura):

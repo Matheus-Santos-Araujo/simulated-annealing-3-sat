@@ -41,6 +41,7 @@ def main():
         print("Clausulas Satisfeitas: %d" % sa.sat)
         porcentagem = (sa.sat/qtd)* 100
         print("Porcentagem: %f%%" % porcentagem)
+        print("E SAT?: %s" % str(sa.ehsat))
         print("Duracao: %f" % duracao)
         iter = iter + 1
 
