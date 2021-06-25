@@ -16,9 +16,9 @@ def solve(resfriamento, lacointerno, files):
     for file in files:
         solution = Solution(resfriamento, lacointerno, File(file))
         inicio = time.time()
-        sa = solution.SimulatedAnnealing()
+        sa, qtd = solution.SimulatedAnnealing()
         duracao = time.time() - inicio
-    return sa, duracao
+    return sa, duracao, qtd
 
 def main():
     
@@ -32,12 +32,15 @@ def main():
     #arquivocnf = ["SAT3.txt"]
     
     while (iter < 1):
-        sa, duracao = solve(alpha, lacointerno, arquivocnf)
+        sa, duracao, qtd = solve(alpha, lacointerno, arquivocnf)
 
         print("Melhor solucao = ")
         print(sa.bit_array)
-        print("Clausulas Satisfeitas = %d" % sa.value)
-        print("Custo: %d" % sa.custo)
+        print("Custo = %d" % sa.value)
+        print("Total de Clausulas: %d" % qtd)
+        print("Clausulas Satisfeitas: %d" % sa.sat)
+        porcentagem = (sa.sat/qtd)* 100
+        print("Porcentagem: %f%%" % porcentagem)
         print("Duracao: %f" % duracao)
         iter = iter + 1
 

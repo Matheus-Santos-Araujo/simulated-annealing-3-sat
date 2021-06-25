@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 TEMPERATURA_MINIMA = 0.001
 
 class estado():
-    def __init__(self, bit_array, value, custo):
+    def __init__(self, bit_array, value, sat):
         self.bit_array = bit_array
         self.value = value
-        self.custo = custo
+        self.sat = sat
 
 class Solution(Sat):
     def __init__(self, resfriamento, lacointerno, file):
@@ -26,15 +26,15 @@ class Solution(Sat):
 
         num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(new_bit_array)
 
-        new_value = num_satisfativeis
+        new_value = num_naosatisfativeis
 
-        return estado(new_bit_array, new_value, num_naosatisfativeis)
+        return estado(new_bit_array, new_value, num_satisfativeis)
 
     def estadoaleatorio(self):
         array = [randint(0, 1) for i in range(self.num_variaveis)]
         array = list(array)
         num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(array)
-        return estado(array, num_satisfativeis, num_naosatisfativeis)
+        return estado(array, num_naosatisfativeis, num_satisfativeis)
        #return estado([0 for i in range(self.num_variaveis)], 0)
 
     def resfria(self, temperatura):
@@ -74,14 +74,19 @@ class Solution(Sat):
                 neighbor = self.pegarvizinhos(estado)
                 E = neighbor.value - estado.value
 
-                if E > 0:
+                if E < 0:
                     estado = neighbor
-                elif math.e**(E/temperatura) >= random.random():
+                elif math.e**(-E/temperatura) >= random.random():
                     estado = neighbor
+
+                if not best_estado:
+                    best_estado = estado
+                elif best_estado.value > estado.value:
+                    best_estado = estado
 
             temperatura = self.resfria(temperatura)
             iteracoes.append(t)
-            estados.append(estado.custo)
+            estados.append(estado.value)
             t = t + 1
             
         plt.plot(iteracoes, estados)
@@ -89,4 +94,4 @@ class Solution(Sat):
         plt.xlabel('Iterações')
         plt.ylabel('Custo')
         plt.show()    
-        return estado
+        return estado, self.num_clausulas
