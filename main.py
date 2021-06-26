@@ -36,7 +36,7 @@ def main():
 
         print("Melhor solucao = ")
         print(sa.bit_array)
-        print("Custo = %d" % sa.value)
+        print("Custo = %d" % sa.custo)
         print("Total de Clausulas: %d" % qtd)
         print("Clausulas Satisfeitas: %d" % sa.sat)
         porcentagem = (sa.sat/qtd)* 100

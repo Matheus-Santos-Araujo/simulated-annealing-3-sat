@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 TEMPERATURA_MINIMA = 0.001
 
 class estado():
-    def __init__(self, bit_array, value, sat, ehsat):
+    def __init__(self, bit_array, custo, sat, ehsat):
         self.bit_array = bit_array
-        self.value = value
+        self.custo = custo
         self.sat = sat
         self.ehsat = ehsat
 
@@ -27,9 +27,9 @@ class Solution(Sat):
 
         num_naosatisfativeis, num_satisfativeis, ehsat = self.objetivo(new_bit_array)
 
-        new_value = num_naosatisfativeis
+        new_custo = num_naosatisfativeis
 
-        return estado(new_bit_array, new_value, num_satisfativeis, ehsat)
+        return estado(new_bit_array, new_custo, num_satisfativeis, ehsat)
 
     def estadoaleatorio(self):
         array = [randint(0, 1) for i in range(self.num_variaveis)]
@@ -54,7 +54,7 @@ class Solution(Sat):
 
         while j < k:
             neighbor = self.pegarvizinhos(estado)
-            E = neighbor.value - estado.value
+            E = neighbor.custo - estado.custo
             if (E > 0):
                 energias.append(E)
                 j = j + 1
@@ -73,7 +73,7 @@ class Solution(Sat):
         while self.checkcongelou(temperatura):
             for i in range(self.lacointerno):
                 neighbor = self.pegarvizinhos(estado)
-                E = neighbor.value - estado.value
+                E = neighbor.custo - estado.custo
 
                 if E < 0:
                     estado = neighbor
@@ -82,12 +82,12 @@ class Solution(Sat):
 
                 if not best_estado:
                     best_estado = estado
-                elif best_estado.value > estado.value:
+                elif best_estado.custo > estado.custo:
                     best_estado = estado
 
             temperatura = self.resfria(temperatura)
             iteracoes.append(t)
-            estados.append(estado.value)
+            estados.append(estado.custo)
             t = t + 1
             
         plt.plot(iteracoes, estados)
