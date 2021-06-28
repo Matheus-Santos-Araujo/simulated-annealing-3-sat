@@ -95,4 +95,4 @@ class Solution(Sat):
         plt.xlabel('Iterações')
         plt.ylabel('Custo')
         plt.show()    
-        return estado, self.num_clausulas
+        return best_estado, self.num_clausulas
