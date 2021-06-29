@@ -24,9 +24,7 @@ def main():
     
     iter = 0
     alpha = 0.8
-    temperaturainicial = 2.5
-    #temperaturainicial = 4.48 * E
-    lacointerno = 200
+    lacointerno = 1000
     arquivocnf = ["SAT1.txt"]
     #arquivocnf = ["SAT2.txt"]
     #arquivocnf = ["SAT3.txt"]
