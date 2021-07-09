@@ -23,10 +23,10 @@ def solve(resfriamento, lacointerno, files):
 def main():
     
     iter = 0
-    alpha = 0.8
+    alpha = 0.99
     lacointerno = 1000
-    arquivocnf = ["SAT1.txt"]
-    #arquivocnf = ["SAT2.txt"]
+    #arquivocnf = ["SAT1.txt"]
+    arquivocnf = ["SAT2.txt"]
     #arquivocnf = ["SAT3.txt"]
     
     while (iter < 1):
