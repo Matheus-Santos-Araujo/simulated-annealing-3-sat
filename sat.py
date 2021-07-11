@@ -6,10 +6,6 @@ class Sat(object):
                 meta_data = line.split()
                 self.num_variaveis = int(meta_data[0])
                 self.num_clausulas = int(meta_data[1])
-            elif line == file[-1]:
-                self.statefile = [l.rstrip() for l in line]
-                self.statefile.pop()
-                self.statefile = [int(i) for i in self.statefile]
             else:
                 clausula = []
                 for var in line.split()[:]:

@@ -28,6 +28,11 @@ def main():
     arquivocnf = ["SAT1.txt"]
     #arquivocnf = ["SAT2.txt"]
     #arquivocnf = ["SAT3.txt"]
+    #arquivocnf = ["SAT4.txt"]
+    #arquivocnf = ["NM1.txt"]
+    #arquivocnf = ["NM2.txt"]
+    #arquivocnf = ["NM3.txt"]
+    #arquivocnf = ["NM4.txt"]
     
     while (iter < 1):
         sa, duracao, qtd = solve(alpha, lacointerno, arquivocnf)
