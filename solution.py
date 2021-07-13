@@ -90,9 +90,9 @@ class Solution(Sat):
             estados.append(estado.custo)
             t = t + 1
             
-        plt.plot(iteracoes, estados)
-        plt.title("3-SAT Simulated Annealing")
-        plt.xlabel('Iterações')
-        plt.ylabel('Custo')
-        plt.show()    
+        #plt.plot(iteracoes, estados)
+        #plt.title("3-SAT Simulated Annealing")
+        #plt.xlabel('Iterações')
+        #plt.ylabel('Custo')
+        #plt.show()    
         return best_estado, self.num_clausulas
