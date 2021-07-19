@@ -87,12 +87,12 @@ class Solution(Sat):
 
             temperatura = self.resfria(temperatura)
             iteracoes.append(t)
-            estados.append(estado.custo)
+            estados.append(estado.sat)
             t = t + 1
             
         plt.plot(iteracoes, estados)
         plt.title("3-SAT Simulated Annealing")
         plt.xlabel('Iterações')
         plt.ylabel('Custo')
-        plt.savefig('sat4.png')    
+        plt.savefig('sat1.png')    
         return best_estado, self.num_clausulas

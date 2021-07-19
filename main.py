@@ -25,10 +25,10 @@ def main():
     iter = 0
     alpha = 0.98
     lacointerno = 1000
-    #arquivocnf = ["SAT1.txt"]
+    arquivocnf = ["SAT1.txt"]
     #arquivocnf = ["SAT2.txt"]
     #arquivocnf = ["SAT3.txt"]
-    arquivocnf = ["SAT4.txt"]
+    #arquivocnf = ["SAT4.txt"]
     #arquivocnf = ["NM1.txt"]
     #arquivocnf = ["NM2.txt"]
     #arquivocnf = ["NM3.txt"]
