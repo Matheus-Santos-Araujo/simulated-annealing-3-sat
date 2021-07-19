@@ -12,6 +12,7 @@ class estado():
         self.custo = custo
         self.sat = sat
         self.ehsat = ehsat
+        self.inicial = 0
 
 class Solution(Sat):
     def __init__(self, resfriamento, lacointerno, file):
@@ -65,6 +66,7 @@ class Solution(Sat):
         estado = self.estadoaleatorio()
         temperatura = self.temperaturainicial
         estados = []
+        valorestados = []
         iteracoes = []
         t = 0
 
@@ -85,14 +87,19 @@ class Solution(Sat):
                 elif best_estado.custo > estado.custo:
                     best_estado = estado
 
+            if(t == 0):
+                inicial = estado.sat
             temperatura = self.resfria(temperatura)
             iteracoes.append(t)
             estados.append(estado.sat)
+            valorestados.append(estado.sat)
             t = t + 1
             
         plt.plot(iteracoes, estados)
-        plt.title("3-SAT Simulated Annealing")
+        plt.title("MAX-SAT Têmpera Simulada")
         plt.xlabel('Iterações')
-        plt.ylabel('Custo')
+        plt.ylabel('Valor')
         plt.savefig('sat1.png')    
-        return best_estado, self.num_clausulas
+        media = sum(valorestados) / len(valorestados)
+        minimo = min(valorestados)
+        return best_estado, self.num_clausulas, inicial, minimo, media

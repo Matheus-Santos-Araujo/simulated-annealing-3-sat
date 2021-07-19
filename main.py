@@ -16,9 +16,9 @@ def solve(resfriamento, lacointerno, files):
     for file in files:
         solution = Solution(resfriamento, lacointerno, File(file))
         inicio = time.time()
-        sa, qtd = solution.SimulatedAnnealing()
+        sa, qtd, inicial, minimo, media = solution.SimulatedAnnealing()
         duracao = time.time() - inicio
-    return sa, duracao, qtd
+    return sa, duracao, qtd, inicial, minimo, media
 
 def main():
     
@@ -35,17 +35,21 @@ def main():
     #arquivocnf = ["NM4.txt"]
     
     while (iter < 1):
-        sa, duracao, qtd = solve(alpha, lacointerno, arquivocnf)
+        sa, duracao, qtd, inicial, minimo, media = solve(alpha, lacointerno, arquivocnf)
 
         print("Melhor solucao = ")
         print(sa.bit_array)
         print("Custo = %d" % sa.custo)
         print("Total de Clausulas: %d" % qtd)
-        print("Clausulas Satisfeitas: %d" % sa.sat)
+        print("Melhor: %d" % sa.sat)
+        print("Inicial: %d" % inicial)
+        print("Minimo: %f" % minimo)
+        print("Media: %f" % media)
         porcentagem = (sa.sat/qtd)* 100
+        print("GAP: %f" % (sa.sat/qtd))
         print("Porcentagem: %f%%" % porcentagem)
         print("E SAT?: %s" % str(sa.ehsat))
-        print("Duracao: %f" % duracao)
+        print("Tempo: %f" % duracao)
         iter = iter + 1
 
 if __name__ == '__main__':
