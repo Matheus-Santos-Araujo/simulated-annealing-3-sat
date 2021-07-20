@@ -59,7 +59,8 @@ class Solution(Sat):
             if (E > 0):
                 energias.append(E)
                 j = j + 1
-        temperatura = 4.48*(sum(energias)/k)        
+        temperatura = 4.48*(sum(energias)/k)
+        print("temperatura inicial = %f" % temperatura)        
         return temperatura
 
     def SimulatedAnnealing(self):
